@@ -24,7 +24,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
 
   // JDBC driverを指定（driverとは、playとmysqlを繋ぐためのアプリ）
-  "mysql"             % "mysql-connector-java"  % "6.0.6",
+  "mysql"             % "mysql-connector-java"  % "8.0.16",
 )
 
 // Adds additional packages into Twirl

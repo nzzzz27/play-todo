@@ -6,3 +6,8 @@ target
 /.project
 /.settings
 /RUNNING_PID
+
+.metals/
+.bloop/
+.ammonite/
+metals.sbt

@@ -2,7 +2,7 @@ import slick.jdbc.MySQLProfile.api._
 import java.time.LocalDateTime
 import scala.reflect.ClassTag
 
-import model.Todo
+import lib.model.Todo
 
 // Table rows
 // https://scala-slick.org/doc/3.3.1/schemas.html#table-rows

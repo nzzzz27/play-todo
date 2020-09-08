@@ -15,9 +15,10 @@ import play.api.db.slick.{
   HasDatabaseConfigProvider,   // DIでSlickデータベースとプロファイルを使用するために必要
 }
 import slick.jdbc.JdbcProfile
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ Future, ExecutionContext }
 
 import lib.model.Todo
+import lib.persistence.db.TodoTable
 
 abstract class TodoRepository @Inject()(
   protected val dbConfigProvider: DatabaseConfigProvider,
@@ -26,7 +27,7 @@ abstract class TodoRepository @Inject()(
   import profile.api._
 
   def getAll() = {
-    val q = for (c <- TodoTable.todo) yield c.name
+    val q = for (c <- TodoTable.todo) yield c.id
     val a = q.result
     val f: Future[Seq[String]] = db.run(a)
     
@@ -34,7 +35,6 @@ abstract class TodoRepository @Inject()(
       case Success(s) => println(s"Result: $s")
       case Failure(t) => t.printStackTrace()
     }
-    "Todo"
   }
 
 }

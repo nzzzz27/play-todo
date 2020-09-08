@@ -1,8 +1,18 @@
+package lib.persistence.db
+
 import slick.jdbc.MySQLProfile.api._
 import java.time.LocalDateTime
 import scala.reflect.ClassTag
 
 import lib.model.Todo
+
+// コンパニオンオブジェクト
+object TodoTable {
+
+  // TodoTableへアクセスできるようにする
+  val todo: TableQuery[TodoTable] = TableQuery[TodoTable]
+
+}
 
 // Table rows
 // https://scala-slick.org/doc/3.3.1/schemas.html#table-rows
@@ -38,4 +48,7 @@ class TodoTable(tag: Tag) extends Table[Todo](tag, "todo") {
       t._1, t._2, t._3, t._4, t._5, LocalDateTime.now(), LocalDateTime.now()
     )}
   )
+ 
+  val db = Database.forURL("jdbc:mysql://localhost/play_todo", driver = "com.mysql.cj.jdbc.Driver")
+
 }

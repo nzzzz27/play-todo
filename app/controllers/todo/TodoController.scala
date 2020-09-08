@@ -11,10 +11,16 @@ import play.api.mvc.{
 
 import scala.concurrent.ExecutionContext
 
+import lib.persistence._
+
 @Singleton
 class TodoController @Inject()(
   val controllerComponents: ControllerComponents
 )(implicit ec: ExecutionContext)
   extends BaseController with play.api.i18n.I18nSupport {
+
+    def showAll() = Action { implicit  req: Request[AnyContent] =>
+    Ok(views.html.index())
+  }
 
 }

@@ -19,7 +19,7 @@ class TodoController @Inject()(
 )(implicit ec: ExecutionContext)
   extends BaseController with play.api.i18n.I18nSupport {
 
-    def showAll() = Action { implicit  req: Request[AnyContent] =>
+  def showAll() = Action { implicit  req: Request[AnyContent] =>
     Ok(views.html.index())
   }
 

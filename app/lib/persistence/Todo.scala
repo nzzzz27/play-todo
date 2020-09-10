@@ -2,7 +2,6 @@ package lib.persistence
 
 import javax.inject.{ Inject, Singleton }
 
-<<<<<<< HEAD
 import play.api.mvc.{
   ControllerComponents,        // ほとんどのControllerが依存している関数
   BaseController,              // Actionを使えるようにする
@@ -10,17 +9,12 @@ import play.api.mvc.{
   Request,                     // httpリクエストを使えるようにする
   AnyContent,                  // リクエストコンテンツタイプに応じたリクエストボディを生成
 }
-=======
-// ほとんどのControllerが依存している関数
-import play.api.mvc.{ ControllerComponents }
->>>>>>> feture/2008-003-create-modelANDrepository
 
 import play.api.db.slick.{
   DatabaseConfigProvider,
   HasDatabaseConfigProvider,   // DIでSlickデータベースとプロファイルを使用するために必要
 }
 import slick.jdbc.JdbcProfile
-<<<<<<< HEAD
 import scala.concurrent.{ Future, ExecutionContext }
 
 import lib.model.Todo

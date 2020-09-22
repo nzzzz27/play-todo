@@ -20,20 +20,16 @@ import scala.concurrent.{ Future, ExecutionContext }
 import lib.model.Todo
 import lib.persistence.db.TodoTable
 
-abstract class TodoRepository @Inject()(
+abstract case class TodoRepository @Inject()(
   protected val dbConfigProvider: DatabaseConfigProvider,
+  todoTable:  TodoTable,
 )(implicit ec: ExecutionContext)
   extends BaseController with HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
-  def getAll() = {
-    val q = for (c <- TodoTable.todo) yield c.id
-    val a = q.result
-    val f: Future[Seq[String]] = db.run(a)
-    
-    f.onComplete {
-      case Success(s) => println(s"Result: $s")
-      case Failure(t) => t.printStackTrace()
+  def getAll(): Future[Seq[Todo]] = {
+    db.run {
+      todoTable.todo.result
     }
   }
 

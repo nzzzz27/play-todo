@@ -8,18 +8,21 @@ import play.api.mvc.{
   Request,                     // httpリクエストを使えるようにする
   AnyContent,                  // リクエストコンテンツタイプに応じたリクエストボディを生成
 }
+import play.api.i18n.I18nSupport
 
 import scala.concurrent.ExecutionContext
 
-import lib.persistence._
+import lib.persistence.{ TodoRepository }
 
 @Singleton
 class TodoController @Inject()(
-  val controllerComponents: ControllerComponents
+  val controllerComponents: ControllerComponents,
+  todoRepo: TodoRepository,
 )(implicit ec: ExecutionContext)
-  extends BaseController with play.api.i18n.I18nSupport {
+  extends BaseController with I18nSupport {
 
   def showAll() = Action { implicit  req: Request[AnyContent] =>
+    todoRepo.getAll()
     Ok(views.html.index())
   }
 

@@ -6,14 +6,6 @@ import scala.reflect.ClassTag
 
 import lib.model.Todo
 
-// コンパニオンオブジェクト
-object TodoTable {
-
-  // TodoTableへアクセスできるようにする
-  val todo: TableQuery[TodoTable] = TableQuery[TodoTable]
-
-}
-
 // Table rows
 // https://scala-slick.org/doc/3.3.1/schemas.html#table-rows
 class TodoTable(tag: Tag) extends Table[Todo](tag, "todo") {
@@ -45,10 +37,10 @@ class TodoTable(tag: Tag) extends Table[Todo](tag, "todo") {
     ),
     // Model => Tuple(table)
     (v: Todo) => Todo.unapply(v).map { t => (
-      t._1, t._2, t._3, t._4, t._5, LocalDateTime.now(), LocalDateTime.now()
+      t._1, t._2, t._3, t._4, t._5, LocalDateTime.now(), t._7
     )}
   )
- 
-  val db = Database.forURL("jdbc:mysql://localhost/play_todo", driver = "com.mysql.cj.jdbc.Driver")
 
+  // TodoTableへアクセスできるようにする
+  val todo: TableQuery[TodoTable] = TableQuery[TodoTable]
 }

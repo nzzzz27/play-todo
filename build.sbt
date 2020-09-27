@@ -7,6 +7,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.3"
 
+// DIを@Injectアノテーションで実装できるようにする
 libraryDependencies += guice
 
 libraryDependencies ++= Seq(

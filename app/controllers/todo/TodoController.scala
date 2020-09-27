@@ -4,7 +4,7 @@ import javax.inject.{ Inject, Singleton }
 
 import play.api.mvc.{
   ControllerComponents,        // ほとんどのControllerが依存している関数
-  BaseController,
+  BaseController,              // Actionを使えるようにする
   Request,                     // httpリクエストを使えるようにする
   AnyContent,                  // リクエストコンテンツタイプに応じたリクエストボディを生成
 }

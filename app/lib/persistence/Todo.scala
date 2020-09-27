@@ -7,8 +7,6 @@ import scala.reflect.ClassTag
 import javax.inject.{ Inject, Singleton }
 
 import play.api.mvc.{
-  ControllerComponents,        // ほとんどのControllerが依存している関数
-  BaseControllerHelpers,
   Request,                     // httpリクエストを使えるようにする
   AnyContent,                  // リクエストコンテンツタイプに応じたリクエストボディを生成
 }
@@ -24,6 +22,9 @@ import lib.model.Todo
 // import lib.persistence.db.TodoTable
 
 import TodoTable.todo
+// @NOTE
+// abstract修飾子をつけるとエラーが出る。case classまたはclassなら大丈夫
+// No implementation for lib.persistence.TodoRepository was bound.
 class TodoRepository @Inject()(
   protected val dbConfigProvider: DatabaseConfigProvider,
 )(implicit ec: ExecutionContext)
@@ -70,7 +71,9 @@ object TodoTable {
   val todo: TableQuery[TodoTable] = TableQuery[TodoTable]
 }
 
-// slickの仕様でLocalDateTimeがうまく動かないので、一旦コメントアウト
+// @NOTE
+// slick3.3以降のの仕様で、LocalDateTimeがうまく動かないので、一旦コメントアウト
+// https://github.com/nzzzz27/play-todo/pull/21#discussion_r495432997
 // class TodoTable(tag: Tag) extends Table[Todo](tag, "todo") {
 //
 //   // Columns

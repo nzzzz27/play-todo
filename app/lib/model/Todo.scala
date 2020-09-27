@@ -8,6 +8,14 @@ case class Todo(
   note:        Option[String],
   category_id: Long,
   status:      Short,
-  updated_at:  LocalDateTime,
-  created_at:  LocalDateTime,
 )
+
+// case class Todo(
+//   id:          Option[Long],
+//   body:        String,
+//   note:        Option[String],
+//   category_id: Long,
+//   status:      Short,
+//   updated_at:  LocalDateTime,
+//   created_at:  LocalDateTime,
+// )

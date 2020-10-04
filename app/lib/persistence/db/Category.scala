@@ -1,3 +1,4 @@
+/*
 package lib.persistence.db
 
 import slick.jdbc.MySQLProfile.api._
@@ -37,3 +38,4 @@ class CategoryTable(tag: Tag) extends Table[Category](tag, "category") {
     )}
   )
 }
+*/

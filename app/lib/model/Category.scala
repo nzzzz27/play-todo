@@ -1,11 +1,15 @@
 package lib.model
 
-import java.time.LocalDateTime
-
 case class Category(
-  id:          Option[Long],
+  id:          Option[Category.Id],
   name:        String,
-  color:       Option[Short],
-  updated_at:  LocalDateTime,
-  created_at:  LocalDateTime,
+  color:       Short,
 )
+
+/*
+ * @NOTE
+ * 同一のCategory IDを使いたいので、専用の型を作る
+ */
+object Category {
+  type Id = Long
+}

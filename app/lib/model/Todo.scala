@@ -1,11 +1,17 @@
 package lib.model
 
-import java.time.LocalDateTime
-
 case class Todo(
-  id:          Option[Long],
-  body:        String,
-  note:        Option[String],
-  category_id: Long,
-  status:      Short,
+  id:             Option[Todo.Id],
+  body:           String,
+  note:           Option[String],
+  status:         Short,
+  categoryId:     Category.Id,
 )
+
+/*
+ * @NOTE
+ * 同一のTodo IDを使いたいので、専用の型を作る
+ */
+object Todo {
+  type Id = Long
+}

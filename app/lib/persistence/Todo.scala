@@ -17,7 +17,7 @@ import play.api.db.slick.{
 }
 import slick.jdbc.JdbcProfile
 import scala.concurrent.{ Future, ExecutionContext }
-import lib.model.Todo
+import lib.model.{ Todo, Category }
 import TodoTable.todo
 
 class TodoRepository @Inject()(
@@ -35,27 +35,32 @@ class TodoRepository @Inject()(
 
 case class TodoTable(tag: Tag) extends Table[Todo](tag, "todo") {
   // Columns
-  /* @1 */ def id          = column[Long]           ("ID", O.PrimaryKey, O.AutoInc)
+  /* @1 */ def id          = column[Todo.Id]        ("ID", O.PrimaryKey, O.AutoInc)
   /* @2 */ def body        = column[String]         ("BODY")
   /* @3 */ def note        = column[Option[String]] ("NOTE")
-  /* @4 */ def category_id = column[Long]           ("CATEGORY_ID")
-  /* @5 */ def status      = column[Short]          ("STATUS")
+  /* @4 */ def status      = column[Short]          ("STATUS")
+  /* @5 */ def category_id = column[Category.Id]    ("CATEGORY_ID")
 
   type TableElementTuple = (
-    Option[Long],
+    Option[Todo.Id],
     String,
     Option[String],
-    Long,
     Short,
+    Category.Id,
   )
 
-  // DB <=> Scala の相互のmapping定義
-  def * = (id.?, body, note, category_id, status) <> (
-    // Tuple(table) => Model
+  /*
+   * DB <=> Scala の相互のmapping定義
+   * DBと全く同じ型のcase classにmappingするなら、これでもok →  <> (Todo.apply(_).tupled, Todo.unapply)
+   *
+   * 参考:https://scala-slick.org/doc/3.3.2/schemas.html#mapped-tables
+   */
+  def * = (id.?, body, note, status, category_id) <> (
+    // Tuple(table) => Model :apply
     (t: TableElementTuple) => Todo(
       t._1, t._2, t._3, t._4, t._5
     ),
-    // Model => Tuple(table)
+    // Model => Tuple(table) :unapply
     (v: Todo) => Todo.unapply(v).map { t => (
       t._1, t._2, t._3, t._4, t._5
     )}

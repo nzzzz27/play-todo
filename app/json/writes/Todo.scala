@@ -16,4 +16,8 @@ object JsValueTodo {
 
   implicit val jsValueTodo = Json.writes[JsValueTodo]
 
+  /*  @NOTE
+   *  case classと異なる形のWritesが欲しい場合は、整形用のメソッドの自作が必要
+   */
+
 }

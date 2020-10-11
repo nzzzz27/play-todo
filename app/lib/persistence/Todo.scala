@@ -34,15 +34,16 @@ class TodoRepository @Inject()(
 }
 
 case class TodoTable(tag: Tag) extends Table[Todo](tag, "todo") {
+  import Todo._
   // Columns
-  /* @1 */ def id          = column[Todo.Id]        ("ID", O.PrimaryKey, O.AutoInc)
+  /* @1 */ def id          = column[Id]        ("ID", O.PrimaryKey, O.AutoInc)
   /* @2 */ def body        = column[String]         ("BODY")
   /* @3 */ def note        = column[Option[String]] ("NOTE")
   /* @4 */ def status      = column[Short]          ("STATUS")
   /* @5 */ def category_id = column[Category.Id]    ("CATEGORY_ID")
 
   type TableElementTuple = (
-    Option[Todo.Id],
+    Option[Id],
     String,
     Option[String],
     Short,

@@ -1,13 +1,11 @@
 package model.todo
 
-import lib.model.Todo
-import lib.model.Category
+import lib.model.Todo._
 
 case class TodoValue (
-  id:            Todo.Id,
+  id:            Id,
   body:          String,
   note:          Option[String],
   status:        Short,
   categoryName:  String,
-  categoryColor: Short,
 )

@@ -18,6 +18,7 @@ import play.api.db.slick.{
 import slick.jdbc.JdbcProfile
 import scala.concurrent.{ Future, ExecutionContext }
 import lib.model.Category
+
 import CategoryTable.category
 
 class CategoryRepository @Inject()(
@@ -40,26 +41,25 @@ class CategoryRepository @Inject()(
 }
 
 case class CategoryTable(tag: Tag) extends Table[Category](tag, "category") {
+  import Category._
   // Columns
-  /* @1 */ def id          = column[Category.Id]    ("ID", O.PrimaryKey, O.AutoInc)
+  /* @1 */ def id          = column[Id]    ("ID", O.PrimaryKey, O.AutoInc)
   /* @2 */ def name        = column[String]         ("NAME")
-  /* @3 */ def color       = column[Short]          ("COLOR")
 
   type TableElementTuple = (
-    Option[Category.Id],
-    String,
-    Short
+    Option[Id],
+    String
   )
 
   // DB <=> Scala の相互のmapping定義
-  def * = (id.?, name, color) <> (
+  def * = (id.?, name) <> (
     // Tuple(table) => Model
     (t: TableElementTuple) => Category(
-      t._1, t._2, t._3
+      t._1, t._2
     ),
     // Model => Tuple(table)
     (v: Category) => Category.unapply(v).map { t => (
-      t._1, t._2, t._3
+      t._1, t._2
     )}
   )
 }

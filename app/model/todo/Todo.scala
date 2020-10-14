@@ -8,4 +8,5 @@ case class TodoValue (
   note:          Option[String],
   status:        Short,
   categoryName:  String,
+  categoryColor: Short
 )

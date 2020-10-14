@@ -45,21 +45,23 @@ case class CategoryTable(tag: Tag) extends Table[Category](tag, "category") {
   // Columns
   /* @1 */ def id          = column[Id]    ("ID", O.PrimaryKey, O.AutoInc)
   /* @2 */ def name        = column[String]         ("NAME")
+  /* @3 */ def color       = column[Option[Short]]  ("COLOR")
 
   type TableElementTuple = (
     Option[Id],
-    String
+    String,
+    Option[Short]
   )
 
   // DB <=> Scala の相互のmapping定義
-  def * = (id.?, name) <> (
+  def * = (id.?, name, color) <> (
     // Tuple(table) => Model
     (t: TableElementTuple) => Category(
-      t._1, t._2
+      t._1, t._2, t._3
     ),
     // Model => Tuple(table)
     (v: Category) => Category.unapply(v).map { t => (
-      t._1, t._2
+      t._1, t._2, t._3
     )}
   )
 }

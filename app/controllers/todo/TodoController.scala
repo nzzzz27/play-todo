@@ -35,14 +35,12 @@ class TodoController @Inject()(
       import json.writes._
 
       val jsValueTodo = todoSeq.map { todo =>
-        val category: Category = categorySeq.filter(_.id == todo.id)(0)
 
         JsValueTodo(
           todo.id.get,
           todo.body,
           todo.note,
-          status       = todo.status,
-          categoryName = category.name,
+          category = categorySeq.filter(_.id == todo.categoryId).headOption 
         )
       }
 

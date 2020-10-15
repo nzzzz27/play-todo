@@ -37,21 +37,14 @@ class TodoController @Inject()(
 
       val todos: Seq[TodoValue] = todoSeq.map { todo =>
 
-        val category = {
-          categorySeq.map(c => (c.id, Seq(c.name, c.color))).toMap.get(Some(todo.categoryId)) match {
-            case Some(category) => category
-            // @TODO fix
-            case None           => "error"
-          }
-        }
+        val category: Option[Category] = categorySeq.filter(_.id == todo.categoryId).headOption
 
         TodoValue(
           todo.id.get,
           todo.body,
           todo.note,
           todo.status,
-          categoryName  = categoryInfo._1,
-          categoryColor = categoryInfo._2
+          category
         )
       }
 

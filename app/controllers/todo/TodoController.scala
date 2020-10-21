@@ -34,29 +34,28 @@ class TodoController @Inject()(
       todoSeq      <- todoRepo.getAll()
       categorySeq  <- categoryRepo.getAll()
     } yield {
+      val todos: Seq[Option[TodoValue]] = todoSeq.map { todo =>
 
-      val todos: Seq[TodoValue] = todoSeq.map { todo =>
-
-        val category: Option[Category] = categorySeq.filter(_.id == todo.categoryId).headOption
-
-        TodoValue(
-          todo.id.get,
-          todo.body,
-          todo.note,
-          todo.status,
-          category
-        )
+        todo.id match {
+          case Some(id) => {
+            Some(TodoValue(
+              todo.id.get,
+              todo.body,
+              todo.note,
+              todo.status,
+              category =  categorySeq.find(_.id == Some(todo.categoryId))
+            ))
+          }
+          // @MEMO:
+          // idが存在しない場合は、viewsでの表示をスキップ
+          case None => None
+        }
       }
-
       val vv = ViewValueTodo(
         todos = todos
       )
-      // println(vv)
-
       Ok(views.html.todo.list())
     }
 
-
   }
-
 }

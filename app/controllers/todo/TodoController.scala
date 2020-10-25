@@ -21,32 +21,30 @@ import lib.persistence.CategoryRepository
 @Singleton
 class TodoController @Inject()(
   val controllerComponents: ControllerComponents,
-  todoRepo: TodoRepository,
+  todoRepo:     TodoRepository,
   categoryRepo: CategoryRepository,
 )(implicit ec: ExecutionContext)
   extends BaseController with I18nSupport {
 
-  // Todo一覧
+  // Todo 一覧ページ
+  // ~~~~~~~~~~~~~~~~~~~~~~
   def showAll() = Action async {
     for {
       todoSeq      <- todoRepo.getAll()
       categorySeq  <- categoryRepo.getAll()
     } yield {
       import json.writes._
-
-      val jsValueTodo = todoSeq.map { todo =>
-
+      todoSeq.map { todo =>
         JsValueTodo(
-          todo.id.get,
+          todo.id,
           todo.body,
           todo.note,
-          category = categorySeq.filter(_.id == todo.categoryId).headOption 
+          todo.status,
+          category =  categorySeq.find(_.id == Some(todo.categoryId))
         )
+        Ok(Json.toJson(JsValueTodo))
       }
-
-      Ok(Json.toJson(jsValueTodo))
     }
   }
-
 
 }

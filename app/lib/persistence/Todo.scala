@@ -18,7 +18,6 @@ import play.api.db.slick.{
 import slick.jdbc.JdbcProfile
 import scala.concurrent.{ Future, ExecutionContext }
 import lib.model.{ Todo, Category }
-import TodoTable.todo
 
 class TodoRepository @Inject()(
   protected val dbConfigProvider: DatabaseConfigProvider,
@@ -31,45 +30,43 @@ class TodoRepository @Inject()(
       todo.result
     }
   }
-}
 
-case class TodoTable(tag: Tag) extends Table[Todo](tag, "todo") {
-  import Todo._
-  // Columns
-  /* @1 */ def id          = column[Id]        ("ID", O.PrimaryKey, O.AutoInc)
-  /* @2 */ def body        = column[String]         ("BODY")
-  /* @3 */ def note        = column[Option[String]] ("NOTE")
-  /* @4 */ def status      = column[Short]          ("STATUS")
-  /* @5 */ def category_id = column[Category.Id]    ("CATEGORY_ID")
+  private class TodoTable(tag: Tag) extends Table[Todo](tag, "todo") {
+    import Todo._
+    // Columns
+    /* @1 */ def id          = column[Id]        ("ID", O.PrimaryKey, O.AutoInc)
+    /* @2 */ def body        = column[String]         ("BODY")
+    /* @3 */ def note        = column[Option[String]] ("NOTE")
+    /* @4 */ def status      = column[Short]          ("STATUS")
+    /* @5 */ def category_id = column[Category.Id]    ("CATEGORY_ID")
 
-  type TableElementTuple = (
-    Option[Id],
-    String,
-    Option[String],
-    Short,
-    Category.Id,
-  )
+    type TableElementTuple = (
+      Option[Id],
+      String,
+      Option[String],
+      Short,
+      Category.Id,
+    )
 
-  /*
-   * DB <=> Scala の相互のmapping定義
-   * DBと全く同じ型のcase classにmappingするなら、これでもok →  <> (Todo.apply(_).tupled, Todo.unapply)
-   *
-   * 参考:https://scala-slick.org/doc/3.3.2/schemas.html#mapped-tables
-   */
-  def * = (id.?, body, note, status, category_id) <> (
-    // Tuple(table) => Model :apply
-    (t: TableElementTuple) => Todo(
-      t._1, t._2, t._3, t._4, t._5
-    ),
-    // Model => Tuple(table) :unapply
-    (v: Todo) => Todo.unapply(v).map { t => (
-      t._1, t._2, t._3, t._4, t._5
-    )}
-  )
-}
+    /*
+     * DB <=> Scala の相互のmapping定義
+     * DBと全く同じ型のcase classにmappingするなら、これでもok →  <> (Todo.apply(_).tupled, Todo.unapply)
+     *
+     * 参考:https://scala-slick.org/doc/3.3.2/schemas.html#mapped-tables
+     */
+    def * = (id.?, body, note, status, category_id) <> (
+      // Tuple(table) => Model :apply
+      (t: TableElementTuple) => Todo(
+        t._1, t._2, t._3, t._4, t._5
+      ),
+      // Model => Tuple(table) :unapply
+      (v: Todo) => Todo.unapply(v).map { t => (
+        t._1, t._2, t._3, t._4, t._5
+      )}
+    )
+  }
 
-object TodoTable {
-  val todo: TableQuery[TodoTable] = TableQuery[TodoTable]
+  private val todo: TableQuery[TodoTable] = TableQuery[TodoTable]
 }
 
 /*

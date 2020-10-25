@@ -4,7 +4,7 @@ import lib.model.Todo._
 import lib.model.Category
 
 case class TodoValue (
-  id:            Id,
+  id:            Option[Id],
   body:          String,
   note:          Option[String],
   status:        Short,

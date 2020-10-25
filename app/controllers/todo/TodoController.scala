@@ -26,33 +26,23 @@ class TodoController @Inject()(
 )(implicit ec: ExecutionContext)
   extends BaseController with I18nSupport {
 
-  /*
-   *  Todo 一覧ページ
-   */
-  def showAll() = Action async { implicit  req: Request[AnyContent] =>
+  // Todo 一覧ページ
+  // ~~~~~~~~~~~~~~~~~~~~~~
+  def showAll() = Action async { implicit req =>
     for {
       todoSeq      <- todoRepo.getAll()
       categorySeq  <- categoryRepo.getAll()
     } yield {
-      val todos: Seq[Option[TodoValue]] = todoSeq.map { todo =>
-
-        todo.id match {
-          case Some(id) => {
-            Some(TodoValue(
-              todo.id.get,
-              todo.body,
-              todo.note,
-              todo.status,
-              category =  categorySeq.find(_.id == Some(todo.categoryId))
-            ))
-          }
-          // @MEMO:
-          // idが存在しない場合は、viewsでの表示をスキップ
-          case None => None
-        }
-      }
       val vv = ViewValueTodo(
-        todos = todos
+        todos = todoSeq.map { todo =>
+          TodoValue(
+            todo.id,
+            todo.body,
+            todo.note,
+            todo.status,
+            category =  categorySeq.find(_.id == Some(todo.categoryId))
+          )
+        }
       )
       Ok(views.html.todo.list())
     }

@@ -28,22 +28,16 @@ class TodoController @Inject()(
 
   // Todo 一覧ページ
   // ~~~~~~~~~~~~~~~~~~~~~~
-  def showAll() = Action async {
+  def showAll() = Action async { implicit req =>
     for {
       todoSeq      <- todoRepo.getAll()
       categorySeq  <- categoryRepo.getAll()
     } yield {
       import json.writes._
-      todoSeq.map { todo =>
-        JsValueTodo(
-          todo.id,
-          todo.body,
-          todo.note,
-          todo.status,
-          category =  categorySeq.find(_.id == Some(todo.categoryId))
-        )
-        Ok(Json.toJson(JsValueTodo))
-      }
+      // todoSeq.map { todo =>
+      //   val caOpt: Option[Category] = categorySeq.find(_.id == Some(todo.categoryId))
+      // }
+      Ok(Json.toJson(JsValueTodo.create(todoSeq, categorySeq)))
     }
   }
 

@@ -44,24 +44,6 @@ object JsValueTodo {
         })
       )
     }
-
   }
 
-
-  // def create(todo: Todo, ca: Option[Category]): JsValueTodo = {
-  //   JsValueTodo(
-  //     todo.id,
-  //     todo.body,
-  //     todo.note,
-  //     todo.status,
-  //     ca match {
-  //       case Some(_) => ca.map{ ca => JsValueCategory(
-  //         id    = ca.id,
-  //         name  = ca.name,
-  //         color = ca.color
-  //       )}
-  //       case None    => None
-  //     }
-  //   )
-  // }
 }

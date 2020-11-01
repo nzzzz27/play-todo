@@ -34,9 +34,9 @@ class TodoController @Inject()(
       categorySeq  <- categoryRepo.getAll()
     } yield {
       import json.writes._
-      val todoCategory = todoSeq.map { todo =>
-        val caOpt: Option[Category] = categorySeq.find(_.id == Some(todo.categoryId))
-      }
+      // val todoCategory = todoSeq.map { todo =>
+      //   val caOpt: Option[Category] = categorySeq.find(_.id == Some(todo.categoryId))
+      // }
       Ok(Json.toJson(JsValueTodo.create(todoSeq, categorySeq)))
     }
   }

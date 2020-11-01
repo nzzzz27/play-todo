@@ -38,6 +38,7 @@ class CategoryRepository @Inject()(
       category.result.map(_.filter(_.id == id).headOption)
     }
   }
+  
 }
 
 case class CategoryTable(tag: Tag) extends Table[Category](tag, "category") {

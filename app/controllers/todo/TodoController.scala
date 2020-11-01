@@ -9,19 +9,19 @@ import play.api.mvc.{
   AnyContent,                  // リクエストコンテンツタイプに応じたリクエストボディを生成
 }
 import play.api.i18n.I18nSupport
+import play.api.libs.json._
 
 import scala.concurrent.ExecutionContext
 
-import lib.persistence.{ TodoRepository }
-import model.todo.{ TodoValue, ViewValueTodo }
-import model.category.{ CategoryValue }
+import lib.persistence.TodoRepository
 import lib.model.Category
 import lib.persistence.CategoryRepository
+
 
 @Singleton
 class TodoController @Inject()(
   val controllerComponents: ControllerComponents,
-  todoRepo: TodoRepository,
+  todoRepo:     TodoRepository,
   categoryRepo: CategoryRepository,
 )(implicit ec: ExecutionContext)
   extends BaseController with I18nSupport {
@@ -33,19 +33,12 @@ class TodoController @Inject()(
       todoSeq      <- todoRepo.getAll()
       categorySeq  <- categoryRepo.getAll()
     } yield {
-      val vv = ViewValueTodo(
-        todos = todoSeq.map { todo =>
-          TodoValue(
-            todo.id,
-            todo.body,
-            todo.note,
-            todo.status,
-            category =  categorySeq.find(_.id == Some(todo.categoryId))
-          )
-        }
-      )
-      Ok(views.html.todo.list())
+      import json.writes._
+      // val todoCategory = todoSeq.map { todo =>
+      //   val caOpt: Option[Category] = categorySeq.find(_.id == Some(todo.categoryId))
+      // }
+      Ok(Json.toJson(JsValueTodo.create(todoSeq, categorySeq)))
     }
-
   }
+
 }
